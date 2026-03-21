@@ -1,0 +1,26 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "An affiliate product",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Product name" },
+        "description": { "type": "string", "description": "Small description" },
+        "price": { "type": "number", "description": "Amount" },
+        "rating": { "type": "number", "description": "Rating out of 5" },
+        "imageUrl": { "type": "string", "description": "URL of the product image" },
+        "affiliateUrl": { "type": "string", "description": "Affiliate link for the Buy Now button" },
+        "category": { "type": "string", "enum": ["Kids", "Beauty", "Dress", "Designs"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "price", "imageUrl", "affiliateUrl", "category", "createdAt"]
+    }
+  },
+  "firestore": {
+    "products/{productId}": {
+      "schema": "Product",
+      "description": "Store affiliate products"
+    }
+  }
+}

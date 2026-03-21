@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Check if the user is authenticated
+    function isAuthenticated() {
+       return request.auth != null;
+    }
+
+    // Default admin
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.email == "shivumutare862@gmail.com" && request.auth.token.email_verified == true;
+    }
+
+    // Validate product data
+    function isValidProduct() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['title', 'description', 'price', 'imageUrl', 'affiliateUrl', 'category', 'createdAt']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 150 &&
+             data.description is string && data.description.size() <= 3000 &&
+             data.price is number && data.price >= 0 &&
+             (!('rating' in data) || data.rating is number || data.rating == null) &&
+             data.imageUrl is string && data.imageUrl.matches("^https?://.*") &&
+             data.affiliateUrl is string && data.affiliateUrl.matches("^https?://.*") &&
+             data.category in ['Kids', 'Beauty', 'Fashion', 'Design'] &&
+             (!('tag' in data) || data.tag in ['Best Seller', 'Sale', '', null]) &&
+             data.createdAt is timestamp;
+    }
+
+    match /products/{productId} {
+      // Public read access so visitors don't need to log in
+      allow read: if true;
+      
+      // Only admin can create/update/delete
+      allow create: if isAdmin() && isValidProduct();
+      allow update: if isAdmin() && isValidProduct() && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isAdmin();
+    }
+  }
+}
