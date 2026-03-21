@@ -14,6 +14,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [addedToCart, setAddedToCart] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  if (!product) return null;
+
   const imageUrl = typeof product.image === 'string' 
     ? product.image 
     : product.image 

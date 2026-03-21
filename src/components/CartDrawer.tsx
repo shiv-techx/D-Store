@@ -49,12 +49,12 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-4">
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex gap-4 p-4 bg-stone-50 rounded-2xl border border-stone-100">
+              {(cartItems || []).map((item) => (
+                <div key={item?.id || Math.random()} className="flex gap-4 p-4 bg-stone-50 rounded-2xl border border-stone-100">
                   <div className="w-24 h-24 rounded-xl overflow-hidden bg-white flex-shrink-0">
                     <img 
-                      src={item.image} 
-                      alt={item.name} 
+                      src={item?.image} 
+                      alt={item?.name} 
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
@@ -63,12 +63,12 @@ export default function CartDrawer() {
                     <div className="flex justify-between items-start">
                       <div>
                         <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wider">
-                          {item.category}
+                          {item?.category}
                         </span>
-                        <h3 className="font-bold text-stone-900 line-clamp-1">{item.name}</h3>
+                        <h3 className="font-bold text-stone-900 line-clamp-1">{item?.name}</h3>
                       </div>
                       <button 
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item?.id)}
                         className="text-stone-400 hover:text-red-500 transition-colors p-1"
                         title="Remove item"
                       >
@@ -76,12 +76,12 @@ export default function CartDrawer() {
                       </button>
                     </div>
                     <p className="text-sm text-stone-500 line-clamp-2 mt-1 mb-2 flex-grow">
-                      {item.description}
+                      {item?.description}
                     </p>
                     <div className="flex items-center justify-between mt-auto">
-                      <span className="font-bold text-stone-900">${item.price.toFixed(2)}</span>
+                      <span className="font-bold text-stone-900">${(item?.price || 0).toFixed(2)}</span>
                       <a 
-                        href={item.affiliateLink || '#'}
+                        href={item?.affiliateLink || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-lg transition-colors"

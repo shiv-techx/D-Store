@@ -69,7 +69,8 @@ export default function ProductDetail() {
     );
   }
 
-  const allImages = [product.image, ...(product.images || [])].filter(Boolean);
+  const safeImages = Array.isArray(product.images) ? product.images : [];
+  const allImages = [product.image, ...safeImages].filter(Boolean);
   
   const getImageUrl = (img: any, width: number = 1200) => {
     return typeof img === 'string'
@@ -256,34 +257,36 @@ export default function ProductDetail() {
       </div>
 
       {/* Reviews Section */}
-      {product.reviews && product.reviews.length > 0 && (
-        <div className="bg-white rounded-3xl shadow-sm border border-stone-100 p-8 md:p-12">
-          <h2 className="text-2xl font-bold text-stone-900 mb-8">Customer Reviews</h2>
+      <div className="bg-white rounded-3xl shadow-sm border border-stone-100 p-8 md:p-12">
+        <h2 className="text-2xl font-bold text-stone-900 mb-8">Customer Reviews</h2>
+        {Array.isArray(product.reviews) && product.reviews.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {product.reviews.map((review, idx) => (
               <div key={review._key || idx} className="bg-stone-50 p-6 rounded-2xl border border-stone-100">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
-                      {review.name.charAt(0)}
+                      {review.name?.charAt(0) || 'U'}
                     </div>
-                    <span className="font-bold text-stone-900">{review.name}</span>
+                    <span className="font-bold text-stone-900">{review.name || 'Anonymous'}</span>
                   </div>
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        className={`w-4 h-4 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-stone-200'}`} 
+                        className={`w-4 h-4 ${i < (review.rating || 0) ? 'fill-amber-400 text-amber-400' : 'text-stone-200'}`} 
                       />
                     ))}
                   </div>
                 </div>
-                <p className="text-stone-600 leading-relaxed italic">"{review.comment}"</p>
+                <p className="text-stone-600 leading-relaxed italic">"{review.comment || ''}"</p>
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <p className="text-stone-500 italic text-lg">No reviews yet.</p>
+        )}
+      </div>
     </div>
   );
 }

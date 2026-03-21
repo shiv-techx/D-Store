@@ -105,10 +105,10 @@ export default function Category() {
           <div className="flex justify-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
           </div>
-        ) : products.length > 0 ? (
+        ) : products && products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
+            {(products || []).map((product) => (
+              <ProductCard key={product?._id || Math.random()} product={product} />
             ))}
           </div>
         ) : (

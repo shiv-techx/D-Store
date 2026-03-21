@@ -179,8 +179,8 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {todaysDeals.map((product) => (
-              <ProductCard key={product._id} product={product} />
+            {(todaysDeals || []).map((product) => (
+              <ProductCard key={product?._id || Math.random()} product={product} />
             ))}
           </div>
         )}
@@ -201,8 +201,8 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {discountProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
+            {(discountProducts || []).map((product) => (
+              <ProductCard key={product?._id || Math.random()} product={product} />
             ))}
           </div>
         )}
@@ -216,13 +216,13 @@ export default function Home() {
             <p className="text-stone-400 text-lg max-w-2xl mx-auto">Why choose us for your shopping needs?</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
+            {(services || []).map((service, index) => (
               <div key={index} className="bg-stone-800 p-8 rounded-2xl border border-stone-700 hover:border-indigo-500 transition-colors">
                 <div className="bg-stone-900 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
-                  {service.icon}
+                  {service?.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                <p className="text-stone-400 leading-relaxed">{service.description}</p>
+                <h3 className="text-xl font-bold mb-3">{service?.title}</h3>
+                <p className="text-stone-400 leading-relaxed">{service?.description}</p>
               </div>
             ))}
           </div>
@@ -236,19 +236,19 @@ export default function Home() {
           <p className="text-stone-500 text-lg max-w-2xl mx-auto">See what our shoppers have to say.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {reviews.map((review) => (
-            <div key={review.id} className="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 flex flex-col h-full">
+          {(reviews || []).map((review) => (
+            <div key={review?.id || Math.random()} className="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 flex flex-col h-full">
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`w-5 h-5 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-stone-200'}`} />
+                  <Star key={i} className={`w-5 h-5 ${i < (review?.rating || 0) ? 'fill-amber-400 text-amber-400' : 'text-stone-200'}`} />
                 ))}
               </div>
-              <p className="text-stone-600 text-lg leading-relaxed mb-6 flex-grow italic">"{review.text}"</p>
+              <p className="text-stone-600 text-lg leading-relaxed mb-6 flex-grow italic">"{review?.text}"</p>
               <div className="flex items-center gap-3 mt-auto">
                 <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
-                  {review.name.charAt(0)}
+                  {review?.name?.charAt(0) || 'U'}
                 </div>
-                <span className="font-bold text-stone-900">{review.name}</span>
+                <span className="font-bold text-stone-900">{review?.name || 'Anonymous'}</span>
               </div>
             </div>
           ))}
