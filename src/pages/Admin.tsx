@@ -4,7 +4,7 @@ import config from '../sanity/sanity.config';
 
 export default function Admin() {
   return (
-    <div className="h-[calc(100vh-64px)] w-full">
+    <div className="h-screen w-full">
       <Studio config={config} />
     </div>
   );

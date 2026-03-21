@@ -14,18 +14,28 @@ import Admin from './pages/Admin';
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 font-sans">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/category/:categoryName" element={<Category />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/admin/*" element={<Admin />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <Routes>
+        {/* Admin Route - Full Screen */}
+        <Route path="/admin/*" element={<Admin />} />
+        
+        {/* Public Routes - With Layout */}
+        <Route
+          path="*"
+          element={
+            <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 font-sans">
+              <Navbar />
+              <main className="flex-grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/category/:categoryName" element={<Category />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          }
+        />
+      </Routes>
     </Router>
   );
 }
