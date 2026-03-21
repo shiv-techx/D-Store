@@ -7,6 +7,15 @@ export const dummyProducts: Product[] = [
     name: 'Interactive Learning Tablet',
     slug: { current: 'interactive-learning-tablet' },
     image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=500&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1544396821-4dd40b938ad3?w=500&q=80',
+      'https://images.unsplash.com/photo-1588508065123-287b28e01397?w=500&q=80'
+    ],
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    reviews: [
+      { _key: '1', name: 'Alice Smith', rating: 5, comment: 'My kid loves this tablet! Highly recommended.' },
+      { _key: '2', name: 'Bob Johnson', rating: 4, comment: 'Great educational tool, but battery life could be better.' }
+    ],
     price: 59.99,
     rating: 4.8,
     description: 'Educational tablet for kids with pre-loaded games, math puzzles, and reading exercises. Durable and kid-safe.',

@@ -1,11 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { ShoppingBag, Menu, X, ShoppingCart } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useCart } from '../context/CartContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { cartItems, setIsCartOpen } = useCart();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -62,10 +64,32 @@ export default function Navbar() {
             <a href="/#contact" className="text-stone-600 hover:text-indigo-600 font-medium transition-colors">
               Contact
             </a>
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 text-stone-600 hover:text-indigo-600 transition-colors"
+            >
+              <ShoppingCart className="w-6 h-6" />
+              {cartItems.length > 0 && (
+                <span className="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden gap-4">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 text-stone-600 hover:text-indigo-600 transition-colors"
+            >
+              <ShoppingCart className="w-6 h-6" />
+              {cartItems.length > 0 && (
+                <span className="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-stone-600 hover:text-stone-900 focus:outline-none"

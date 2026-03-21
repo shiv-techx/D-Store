@@ -3,6 +3,14 @@ export interface Product {
   name: string;
   slug: { current: string };
   image: any; // Sanity Image object
+  images?: any[]; // Array of Sanity Image objects
+  videoUrl?: string;
+  reviews?: {
+    _key?: string;
+    name: string;
+    rating: number;
+    comment: string;
+  }[];
   price: number;
   rating: number;
   description: string;

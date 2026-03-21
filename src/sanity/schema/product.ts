@@ -21,12 +21,41 @@ export default {
     },
     {
       name: 'image',
-      title: 'Product Image',
+      title: 'Product Image (Main)',
       type: 'image',
       options: {
         hotspot: true,
       },
       validation: (Rule: any) => Rule.required(),
+    },
+    {
+      name: 'images',
+      title: 'Additional Images',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      description: 'Upload additional images for the product gallery.',
+    },
+    {
+      name: 'videoUrl',
+      title: 'Product Video URL',
+      type: 'url',
+      description: 'Optional video URL (e.g., YouTube or Vimeo link) for the product.',
+    },
+    {
+      name: 'reviews',
+      title: 'Customer Reviews',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'name', title: 'Reviewer Name', type: 'string', validation: (Rule: any) => Rule.required() },
+            { name: 'rating', title: 'Rating', type: 'number', validation: (Rule: any) => Rule.required().min(1).max(5) },
+            { name: 'comment', title: 'Comment', type: 'text', validation: (Rule: any) => Rule.required() },
+          ],
+        },
+      ],
+      description: 'Add manual customer reviews here.',
     },
     {
       name: 'price',

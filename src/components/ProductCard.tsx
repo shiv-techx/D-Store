@@ -1,22 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star, ShoppingCart, Check, Share2 } from 'lucide-react';
 import { Product } from '../types';
 import { urlFor } from '../sanity/client';
+import { useCart } from '../context/CartContext';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { addToCart, setIsCartOpen } = useCart();
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const imageUrl = typeof product.image === 'string' 
     ? product.image 
     : product.image 
       ? urlFor(product.image).width(600).url() 
       : 'https://placehold.co/600x600?text=No+Image';
 
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${window.location.origin}/product/${product.slug?.current || product._id}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full">
+    <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative">
       <Link to={`/product/${product.slug?.current || product._id}`} className="block relative aspect-square overflow-hidden bg-stone-100">
         <img
           src={imageUrl}
@@ -33,6 +47,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         )}
       </Link>
+      
+      {/* Share Button */}
+      <div className="absolute top-3 right-3 z-10">
+        {product.discount > 0 ? (
+          <button
+            onClick={handleCopyLink}
+            className="mt-8 p-2 bg-white/90 backdrop-blur-sm hover:bg-white text-stone-700 hover:text-indigo-600 rounded-full shadow-sm transition-colors flex items-center justify-center"
+            title="Share product"
+          >
+            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
+          </button>
+        ) : (
+          <button
+            onClick={handleCopyLink}
+            className="p-2 bg-white/90 backdrop-blur-sm hover:bg-white text-stone-700 hover:text-indigo-600 rounded-full shadow-sm transition-colors flex items-center justify-center"
+            title="Share product"
+          >
+            {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
+          </button>
+        )}
+        {copied && (
+          <div className="absolute top-full right-0 mt-2 bg-stone-900 text-white text-[10px] font-bold py-1 px-2 rounded whitespace-nowrap shadow-lg">
+            Link copied!
+          </div>
+        )}
+      </div>
+
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex items-center justify-between mb-3">
           <span className="text-2xl font-extrabold text-stone-900">${product.price?.toFixed(2)}</span>
@@ -51,11 +92,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </p>
         <div className="mt-auto flex flex-col gap-2">
           <button
-            onClick={() => alert('Added to cart! (Demo only)')}
+            onClick={() => {
+              addToCart({
+                id: product._id,
+                name: product.name,
+                price: product.price,
+                image: imageUrl,
+                affiliateLink: product.affiliateLink,
+                category: product.category,
+                description: product.description,
+              });
+              setAddedToCart(true);
+              setIsCartOpen(true);
+              setTimeout(() => setAddedToCart(false), 2000);
+            }}
             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors"
           >
-            <ShoppingCart className="w-4 h-4" />
-            Add to Cart
+            {addedToCart ? (
+              <>
+                <Check className="w-4 h-4" />
+                Added
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="w-4 h-4" />
+                Add to Cart
+              </>
+            )}
           </button>
           <a
             href={product.affiliateLink || '#'}
