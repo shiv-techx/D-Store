@@ -4,6 +4,7 @@ import { Product } from '../types';
 import { Star, ArrowLeft, Share2, Check, ShoppingCart, PlayCircle } from 'lucide-react';
 import { sanityClient, urlFor } from '../sanity/client';
 import { useCart } from '../context/CartContext';
+import { useCurrency } from '../context/CurrencyContext';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +15,7 @@ export default function ProductDetail() {
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   const { addToCart, setIsCartOpen } = useCart();
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -192,7 +194,7 @@ export default function ProductDetail() {
 
             <div className="flex items-center gap-4 mb-8">
               <span className="text-3xl font-bold text-indigo-600">
-                ${product.price?.toFixed(2)}
+                {formatPrice(product.price || 0)}
               </span>
               <div className="flex items-center bg-amber-50 px-3 py-1 rounded-full text-amber-600">
                 <Star className="w-5 h-5 fill-current" />

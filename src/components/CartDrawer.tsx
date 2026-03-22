@@ -1,9 +1,11 @@
 import React from 'react';
 import { X, ShoppingBag, Trash2, ExternalLink } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useCurrency } from '../context/CurrencyContext';
 
 export default function CartDrawer() {
   const { isCartOpen, setIsCartOpen, cartItems, removeFromCart, clearCart } = useCart();
+  const { formatPrice } = useCurrency();
 
   if (!isCartOpen) return null;
 
@@ -79,7 +81,7 @@ export default function CartDrawer() {
                       {item?.description}
                     </p>
                     <div className="flex items-center justify-between mt-auto">
-                      <span className="font-bold text-stone-900">${(item?.price || 0).toFixed(2)}</span>
+                      <span className="font-bold text-stone-900">{formatPrice(item?.price || 0)}</span>
                       <a 
                         href={item?.affiliateLink || '#'}
                         target="_blank"
