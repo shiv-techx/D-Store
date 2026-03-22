@@ -258,9 +258,9 @@ export default function Home() {
       <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full text-center">
         <h2 className="text-4xl font-extrabold text-stone-900 tracking-tight mb-4">Get in Touch</h2>
         <p className="text-stone-500 text-lg max-w-2xl mx-auto mb-8">Have questions? We'd love to hear from you.</p>
-        <a href="mailto:support@dstore.com" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-indigo-600 text-white font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/30">
+        <Link to="/contact" className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-indigo-600 text-white font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/30">
           Contact Support
-        </a>
+        </Link>
       </section>
     </div>
   );

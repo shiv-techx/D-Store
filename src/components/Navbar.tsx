@@ -82,9 +82,9 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <a href="/#contact" className="text-stone-600 hover:text-indigo-600 font-medium transition-colors">
+            <Link to="/contact" className="text-stone-600 hover:text-indigo-600 font-medium transition-colors">
               Contact
-            </a>
+            </Link>
             
             {/* Currency Switcher */}
             <div className="relative" ref={currencyRef}>
@@ -176,13 +176,13 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <a
-              href="/#contact"
+            <Link
+              to="/contact"
               onClick={() => setIsOpen(false)}
               className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-indigo-600 hover:bg-stone-50 transition-colors duration-300"
             >
               Contact
-            </a>
+            </Link>
             
             {/* Mobile Currency Switcher */}
             <div className="pt-4 pb-2 border-t border-stone-200 mt-4">

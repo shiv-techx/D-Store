@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import Category from './pages/Category';
 import ProductDetail from './pages/ProductDetail';
 import Admin from './pages/Admin';
+import Contact from './pages/Contact';
 import { CartProvider } from './context/CartContext';
 import { CurrencyProvider } from './context/CurrencyContext';
 import CartDrawer from './components/CartDrawer';
@@ -37,6 +38,7 @@ export default function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/category/:categoryName" element={<Category />} />
                         <Route path="/product/:id" element={<ProductDetail />} />
+                        <Route path="/contact" element={<Contact />} />
                       </Routes>
                     </main>
                     <Footer />
