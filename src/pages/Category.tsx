@@ -4,7 +4,6 @@ import { Product } from '../types';
 import ProductCard from '../components/ProductCard';
 import { motion } from 'motion/react';
 import { sanityClient } from '../sanity/client';
-import { dummyProducts } from '../data/dummyProducts';
 
 const categoryData = {
   'Kids': {
@@ -41,13 +40,10 @@ export default function Category() {
           { category: sanityCategoryName }
         );
         console.log("Fetched category products:", fetchedProducts);
-        setProducts(fetchedProducts);
+        setProducts(fetchedProducts || []);
       } catch (error) {
         console.error("Error fetching category products from Sanity:", error);
-        // Fallback to dummy data
-        const fallbackProducts = dummyProducts.filter(p => p.category === sanityCategoryName && p.status === 'Active');
-        console.log("Fallback category products:", fallbackProducts);
-        setProducts(fallbackProducts);
+        setProducts([]);
       } finally {
         setLoading(false);
       }

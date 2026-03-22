@@ -18,14 +18,6 @@ async function startServer() {
       changeOrigin: true,
       pathRewrite: {
         "^/api/sanity": "",
-      },
-      router: (req) => {
-        // Route GET requests to the CDN for better performance
-        if (req.method === 'GET') {
-          return `https://${env.VITE_SANITY_PROJECT_ID || 'el3r3rtq'}.apicdn.sanity.io`;
-        }
-        // Route mutations (POST, etc.) to the uncached API
-        return `https://${env.VITE_SANITY_PROJECT_ID || 'el3r3rtq'}.api.sanity.io`;
       }
     })
   );

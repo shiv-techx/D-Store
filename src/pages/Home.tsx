@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Zap, ShieldCheck, Sparkles, Navigation, Star } from 'lucide-react';
 import { sanityClient } from '../sanity/client';
-import { dummyProducts } from '../data/dummyProducts';
 
 const services = [
   {
@@ -65,17 +64,12 @@ export default function Home() {
         ]);
         console.log("Fetched deals:", deals);
         console.log("Fetched discounts:", discounts);
-        setTodaysDeals(deals);
-        setDiscountProducts(discounts);
+        setTodaysDeals(deals || []);
+        setDiscountProducts(discounts || []);
       } catch (error) {
         console.error("Error fetching products from Sanity:", error);
-        // Fallback to dummy data if Sanity is not configured
-        const fallbackDeals = dummyProducts.filter(p => p.isFeatured && p.status === 'Active').slice(0, 4);
-        const fallbackDiscounts = dummyProducts.filter(p => p.discount > 0 && p.status === 'Active').slice(0, 4);
-        console.log("Fallback deals:", fallbackDeals);
-        console.log("Fallback discounts:", fallbackDiscounts);
-        setTodaysDeals(fallbackDeals);
-        setDiscountProducts(fallbackDiscounts);
+        setTodaysDeals([]);
+        setDiscountProducts([]);
       } finally {
         setLoading(false);
       }

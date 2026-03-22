@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { Product } from '../types';
 import { Star, ArrowLeft, Share2, Check, ShoppingCart, PlayCircle } from 'lucide-react';
 import { sanityClient, urlFor } from '../sanity/client';
-import { dummyProducts } from '../data/dummyProducts';
 import { useCart } from '../context/CartContext';
 
 export default function ProductDetail() {
@@ -28,17 +27,11 @@ export default function ProductDetail() {
         if (fetchedProduct) {
           setProduct(fetchedProduct);
         } else {
-          // Fallback to dummy data if not found in Sanity
-          const dummyProduct = dummyProducts.find(p => (p._id === id || p.slug?.current === id) && p.status === 'Active');
-          console.log("Fallback product:", dummyProduct);
-          setProduct(dummyProduct || null);
+          setProduct(null);
         }
       } catch (error) {
         console.error("Error fetching product from Sanity:", error);
-        // Fallback to dummy data on error
-        const dummyProduct = dummyProducts.find(p => (p._id === id || p.slug?.current === id) && p.status === 'Active');
-        console.log("Fallback product (error):", dummyProduct);
-        setProduct(dummyProduct || null);
+        setProduct(null);
       } finally {
         setLoading(false);
       }
