@@ -63,13 +63,19 @@ export default function Home() {
           sanityClient.fetch(`*[_type == "product" && status == "Active" && isFeatured == true] | order(createdAt desc)[0...4]`),
           sanityClient.fetch(`*[_type == "product" && status == "Active" && discount > 0] | order(createdAt desc)[0...4]`)
         ]);
+        console.log("Fetched deals:", deals);
+        console.log("Fetched discounts:", discounts);
         setTodaysDeals(deals);
         setDiscountProducts(discounts);
       } catch (error) {
         console.error("Error fetching products from Sanity:", error);
         // Fallback to dummy data if Sanity is not configured
-        setTodaysDeals(dummyProducts.filter(p => p.isFeatured).slice(0, 4));
-        setDiscountProducts(dummyProducts.filter(p => p.discount > 0).slice(0, 4));
+        const fallbackDeals = dummyProducts.filter(p => p.isFeatured && p.status === 'Active').slice(0, 4);
+        const fallbackDiscounts = dummyProducts.filter(p => p.discount > 0 && p.status === 'Active').slice(0, 4);
+        console.log("Fallback deals:", fallbackDeals);
+        console.log("Fallback discounts:", fallbackDiscounts);
+        setTodaysDeals(fallbackDeals);
+        setDiscountProducts(fallbackDiscounts);
       } finally {
         setLoading(false);
       }

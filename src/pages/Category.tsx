@@ -40,11 +40,14 @@ export default function Category() {
           `*[_type == "product" && status == "Active" && category == $category] | order(createdAt desc)`,
           { category: sanityCategoryName }
         );
+        console.log("Fetched category products:", fetchedProducts);
         setProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching category products from Sanity:", error);
         // Fallback to dummy data
-        setProducts(dummyProducts.filter(p => p.category === sanityCategoryName));
+        const fallbackProducts = dummyProducts.filter(p => p.category === sanityCategoryName && p.status === 'Active');
+        console.log("Fallback category products:", fallbackProducts);
+        setProducts(fallbackProducts);
       } finally {
         setLoading(false);
       }

@@ -21,20 +21,23 @@ export default function ProductDetail() {
       if (!id) return;
       try {
         const fetchedProduct = await sanityClient.fetch(
-          `*[_type == "product" && (slug.current == $id || _id == $id)][0]`,
+          `*[_type == "product" && status == "Active" && (slug.current == $id || _id == $id)][0]`,
           { id }
         );
+        console.log("Fetched product:", fetchedProduct);
         if (fetchedProduct) {
           setProduct(fetchedProduct);
         } else {
           // Fallback to dummy data if not found in Sanity
-          const dummyProduct = dummyProducts.find(p => p._id === id || p.slug?.current === id);
+          const dummyProduct = dummyProducts.find(p => (p._id === id || p.slug?.current === id) && p.status === 'Active');
+          console.log("Fallback product:", dummyProduct);
           setProduct(dummyProduct || null);
         }
       } catch (error) {
         console.error("Error fetching product from Sanity:", error);
         // Fallback to dummy data on error
-        const dummyProduct = dummyProducts.find(p => p._id === id || p.slug?.current === id);
+        const dummyProduct = dummyProducts.find(p => (p._id === id || p.slug?.current === id) && p.status === 'Active');
+        console.log("Fallback product (error):", dummyProduct);
         setProduct(dummyProduct || null);
       } finally {
         setLoading(false);
