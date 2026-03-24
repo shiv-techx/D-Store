@@ -4,7 +4,6 @@ import { Star, ShoppingCart, Check, Share2 } from 'lucide-react';
 import { Product } from '../types';
 import { urlFor } from '../sanity/client';
 import { useCart } from '../context/CartContext';
-import { useCurrency } from '../context/CurrencyContext';
 
 interface ProductCardProps {
   product: Product;
@@ -12,7 +11,6 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart, setIsCartOpen } = useCart();
-  const { formatPrice } = useCurrency();
   const [addedToCart, setAddedToCart] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -80,7 +78,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-2xl font-extrabold text-stone-900">{formatPrice(product.price || 0)}</span>
+          <span className="text-2xl font-extrabold text-stone-900">${product.price || 0}</span>
           <div className="flex items-center bg-stone-50 px-2 py-1 rounded-md border border-stone-100">
             <Star className="w-4 h-4 text-amber-500 fill-current" />
             <span className="ml-1 text-sm font-bold text-stone-700">{product.rating ? product.rating.toFixed(1) : 'New'}</span>

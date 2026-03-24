@@ -1,17 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingCart, ChevronDown } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { Menu, X, ShoppingCart } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
-import { useCurrency } from '../context/CurrencyContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
   const location = useLocation();
   const { cartItems, setIsCartOpen } = useCart();
-  const { currency, setCurrency } = useCurrency();
-  const currencyRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -21,29 +17,12 @@ export default function Navbar() {
     { name: 'Design', path: '/category/Design' },
   ];
 
-  const currencies = [
-    { code: 'USD', symbol: '$', name: 'US Dollar' },
-    { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
-    { code: 'GBP', symbol: '£', name: 'British Pound' },
-    { code: 'EUR', symbol: '€', name: 'Euro' },
-  ];
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (currencyRef.current && !currencyRef.current.contains(event.target as Node)) {
-        setIsCurrencyOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -89,39 +68,6 @@ export default function Navbar() {
             <Link to="/contact" className="text-stone-600 hover:text-indigo-600 font-medium transition-colors">
               Contact
             </Link>
-            
-            {/* Currency Switcher */}
-            <div className="relative" ref={currencyRef}>
-              <button
-                onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
-                className="flex items-center gap-1 text-stone-600 hover:text-indigo-600 font-medium transition-colors"
-              >
-                <span>{currency}</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${isCurrencyOpen ? 'rotate-180' : ''}`} />
-              </button>
-              
-              {isCurrencyOpen && (
-                <div className="absolute top-full right-0 mt-2 w-40 bg-white rounded-xl shadow-lg border border-stone-100 py-2 z-50">
-                  {currencies.map((c) => (
-                    <button
-                      key={c.code}
-                      onClick={() => {
-                        setCurrency(c.code as any);
-                        setIsCurrencyOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                        currency === c.code 
-                          ? 'bg-indigo-50 text-indigo-600 font-bold' 
-                          : 'text-stone-600 hover:bg-stone-50 hover:text-stone-900'
-                      }`}
-                    >
-                      <span className="inline-block w-6 text-center font-bold">{c.symbol}</span>
-                      {c.code}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
 
             <button 
               onClick={() => setIsCartOpen(true)}
@@ -187,30 +133,6 @@ export default function Navbar() {
             >
               Contact
             </Link>
-            
-            {/* Mobile Currency Switcher */}
-            <div className="pt-4 pb-2 border-t border-stone-200 mt-4">
-              <p className="px-3 text-sm font-bold text-stone-500 uppercase tracking-wider mb-2">Currency</p>
-              <div className="grid grid-cols-2 gap-2 px-3">
-                {currencies.map((c) => (
-                  <button
-                    key={c.code}
-                    onClick={() => {
-                      setCurrency(c.code as any);
-                      setIsOpen(false);
-                    }}
-                    className={`flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      currency === c.code 
-                        ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' 
-                        : 'bg-stone-50 text-stone-700 border border-stone-200 hover:bg-stone-100'
-                    }`}
-                  >
-                    <span className="font-bold">{c.symbol}</span>
-                    {c.code}
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       )}

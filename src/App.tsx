@@ -12,16 +12,14 @@ import ProductDetail from './pages/ProductDetail';
 import Admin from './pages/Admin';
 import Contact from './pages/Contact';
 import { CartProvider } from './context/CartContext';
-import { CurrencyProvider } from './context/CurrencyContext';
 import CartDrawer from './components/CartDrawer';
 import ErrorBoundary from './components/ErrorBoundary';
 
 export default function App() {
   return (
     <ErrorBoundary>
-      <CurrencyProvider>
-        <CartProvider>
-          <Router>
+      <CartProvider>
+        <Router>
             <Routes>
               {/* Admin Route - Full Screen */}
               <Route path="/admin/*" element={<Admin />} />
@@ -47,8 +45,7 @@ export default function App() {
               />
             </Routes>
           </Router>
-        </CartProvider>
-      </CurrencyProvider>
+      </CartProvider>
     </ErrorBoundary>
   );
 }
